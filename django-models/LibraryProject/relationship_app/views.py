@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Book
 from .models import Library
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 
 # Create your views here.
 
@@ -14,6 +14,6 @@ def book_list(request):
 
 #class-based view that displays details for a specific library, 
 # listing all books available in that library.
-class LibraryListView(ListView):
+class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     model = Library
