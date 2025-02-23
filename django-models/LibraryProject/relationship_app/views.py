@@ -30,8 +30,8 @@ class Registration(CreateView):
     template_name = 'relationship_app/register.html'
 
 #Utilize Django’s built-in views and forms for handling user login
-class RelationLoginView(LoginView):
-    template_name = 'relationship_app/login.html'
+#class RelationLoginView(LoginView):
+#    template_name = 'relationship_app/login.html'
 #Utilize Django’s built-in views and forms for handling user logout
-class RelationLogoutView(LogoutView):
-    template_name = 'relationship_app/logout.html'
+#class RelationLogoutView(LogoutView):
+#    template_name = 'relationship_app/logout.html'
