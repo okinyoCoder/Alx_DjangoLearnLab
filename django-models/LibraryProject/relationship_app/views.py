@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from .models import Book
+from django.shortcuts import render, redirect
 from .models import Library
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.detail import DetailView
@@ -28,6 +27,17 @@ class RegistrationView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
+
+def register(request):
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('list_books')
+    else:
+      form = UserCreationForm()
+  return render(request, 'relationship_app/register.html', {'form': form})
 
 #Utilize Django’s built-in views and forms for handling user login
 #class RelationLoginView(LoginView):
