@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib.auth import login
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.views import LoginView, LogoutView
 
 # Create your views here.
@@ -49,25 +49,25 @@ def register(request):
 
 
 #Admin view that only users with the ‘Admin’ role can access
+def is_admin(user):
+  return user.userprofile.role == "Admin"
+
 @user_passes_test(is_admin)
 def admin_view(request):
    return render(request, "relationship_app/admin_view.html")
 
 #Librarian view accessible only to users identified as Librarians
+def is_librarian(user):
+  return user.userprofile.role == "Librarian"
+
 @user_passes_test(is_librarian)
 def librarian_view(request):
    return render(request, "relationship_app/librarian_view.html")
 
 #Member view for users with the Member role
+def is_member(user):
+  return user.userprofile.role == "Member"
+
 @user_passes_test(is_member)
 def member_view(request):
    return render(request, "relationship_app/member_view.html")
-
-def is_admin(user):
-  return user.userprofile.role == "Admin"
-
-def is_librarian(user):
-  return user.userprofile.role == "Librarian"
-
-def is_member(user):
-  return user.userprofile.role == "Member"
