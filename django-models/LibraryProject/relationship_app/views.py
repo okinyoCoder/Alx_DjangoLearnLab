@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Library, UserProfile, Book
-from django.contrib.auth.views import LoginView, LogoutView
+from .models import Library, Book
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.views import LoginView, LogoutView
 
 # Create your views here.
 
