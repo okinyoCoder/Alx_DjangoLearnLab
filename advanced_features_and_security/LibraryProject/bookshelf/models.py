@@ -7,8 +7,17 @@ class Book(models.Model):
     author = models.CharField(max_length=200)
     publication_year = models.IntegerField()
 
+    class meta:
+        Permissions =[
+            ("can_view", "can view book"),
+            ("can_create", "can create book"),
+            ("can_edit", "can edit book"),
+            ("can_delete", "can delete book"),
+        ]
+
     def __str__(self):
         return self.title
+    
 
    
 class CustomUserManager(BaseUserManager):
@@ -18,7 +27,7 @@ class CustomUserManager(BaseUserManager):
         birth and password.
         """
         if not email:
-            raise ValueError "Users must have an email"
+            raise ValueError("Users must have an email")
         user = self.model(email=self.normalize_email(email), password=password, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
