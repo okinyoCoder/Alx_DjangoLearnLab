@@ -10,7 +10,7 @@ def example_view(request):
 
 # Create your views here.
 @permission_required('bookshelf.can_view', raise_exception=True)
-def book_detail(request, book_id):
+def book_list(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     return render(request, 'book_list.html', {'books': book})
 
