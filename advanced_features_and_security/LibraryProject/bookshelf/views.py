@@ -5,11 +5,10 @@ from .forms import BookForm
 from django.contrib.auth.decorators import permission_required, login_required
 
 # Create your views here.
-@permission_required('bookshelf.can_view', raise_exception=True) 
-class BookDetailView(DetailView):
-    model = Book
-    template_name = 'bookdetailview.html'
-    context_object_name = 'book'
+@permission_required('bookshelf.can_view', raise_exception=True)
+def book_detail(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    return render(request, 'book_list.html', {'books': book})
 
 @permission_required('bookshelf.can_add', raise_exception=True) 
 def add_book(request):
