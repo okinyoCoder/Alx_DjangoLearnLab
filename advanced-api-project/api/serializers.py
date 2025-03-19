@@ -11,9 +11,9 @@ class BookSerializer(serializers.ModelSerializer):
         """custom validation to the BookSerializer to 
            ensure the publication_year is not in the future
         """
-        thisYear = datetime.datetime.now().year
-        if data['publication_year'] > thisYear:
-            raise serializers.ValidationError("ensure the publication_year is not in the future")
+        today = datetime.datetime.now().year
+        if data['publication_year'] > today:
+            raise serializers.ValidationError("Ensure the publication year is not in the future")
         return data
 
 class AuthorSerializer(serializers.ModelSerializer):
