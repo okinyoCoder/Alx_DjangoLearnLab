@@ -13,9 +13,9 @@ class BookAPITestCase(TestCase):
         self.client.login(username='Power', password='power123')
         
         # Create some books
-        self.book1 = Book.objects.create(title="Angels and Demons", author="Dan Brown", publication_year=2015)
-        self.book2 = Book.objects.create(title="The Hating Game", author="Sally Thorne", publication_year=2019)
-        self.book3 = Book.objects.create(title="Django Rest Framework", author="Sam Brown", publication_year=2022)
+        self.book1 = Book.objects.create(title="Book A", author="Author A", publication_year=2013)
+        self.book2 = Book.objects.create(title="Book B", author="Author B", publication_year=2016)
+        self.book3 = Book.objects.create(title="Book C", author="Author C", publication_year=2020)
     
     def test_create_book(self):
         # Test the creation of a new book
