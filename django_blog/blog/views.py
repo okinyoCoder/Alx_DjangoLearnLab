@@ -29,4 +29,4 @@ def edit_profile(request, user_id):
             return redirect('/success/')
     else:
         form = UserCreationForm(instance=obj)
-    return render(request, 'blog/profile.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
