@@ -4,8 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Post
-from .form import CreatePostForm
+from .models import Post, Comment
+from .form import CreatePostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
@@ -45,7 +45,7 @@ class PostDetailView(DetailView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    template_name = 'blog/post.html'
+    template_name = 'blog/post_form.html'
     form_class = CreatePostForm
 
     def form_valid(self, form):
@@ -65,9 +65,50 @@ class PostDeleteView(DeleteView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = 'blog/post.html'
+    template_name = 'blog/post_form.html'
     form_class = CreatePostForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+    
+
+# Comment Functionality to Blog Posts
+
+   # view to display all comments under a blog post
+def allComment(request, post_id):
+    postObj = get_object_or_404(Post, id=post_id)
+    comments = Comment.objects.filter(post=postObj)
+    return render( request, 'blog/allComment.html', {'comment': comments})
+
+class commentDetailView(DetailView):
+    model = Comment
+    template_name = 'blog/detail_comment.html'
+
+def create_comment(request):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post_list')
+    else:
+        form = CommentForm()
+    return render(request, 'blog/comment_form.html', {'form': form})
+
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.method == "POST":
+        form = comment(request.POST, instance=comment)
+        form.save()
+        return redirect('post_list')
+    else: 
+        form = CommentForm()
+    return render(request, 'blog/comment_form.html', {'form': form})
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.method == "POST":
+        comment.delete()
+        return redirect("post_list")
+    return render(request, 'relationship_app/delete_comment.html', {'comment': comment})
+    
