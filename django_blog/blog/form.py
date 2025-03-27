@@ -11,8 +11,6 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('content',)
 
-    def clean_content(self):
-        content = self.cleaned_data.get('content')
-        if not content or len(content) < 5:
-            raise forms.ValidationError("Comment must be at least 5 characters long")
-        return content
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs.update({'rows': 3, 'placeholder': 'Write a comment...'})
