@@ -85,30 +85,31 @@ class commentDetailView(DetailView):
     model = Comment
     template_name = 'blog/detail_comment.html'
 
-def create_comment(request):
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('post_list')
-    else:
-        form = CommentForm()
-    return render(request, 'blog/comment_form.html', {'form': form})
+class commentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    template_name = 'blog/comment_form.html'
+    form_class = CommentForm
 
-def edit_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
-    if request.method == "POST":
-        form = comment(request.POST, instance=comment)
-        form.save()
-        return redirect('post_list')
-    else: 
-        form = CommentForm()
-    return render(request, 'blog/comment_form.html', {'form': form})
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
-def delete_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
-    if request.method == "POST":
-        comment.delete()
-        return redirect("post_list")
-    return render(request, 'relationship_app/delete_comment.html', {'comment': comment})
-    
+class CommentUpdateView(UpdateView):
+    model = Comment
+    template_name = 'blog/comment_form.html'
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        else: return False
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = 'blog/delete_comment.html'
+    success_url=reverse_lazy('post-list')    
