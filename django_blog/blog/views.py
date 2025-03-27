@@ -109,6 +109,6 @@ class CommentDeleteView(DeleteView):
     template_name = 'blog/delete_comment.html'
     success_url=reverse_lazy('comment-list')    
 
-class CommentCreateList(ListView):
+class CommentListView(ListView):
     model = Comment
     template_name = 'blog/list_comment.html'
