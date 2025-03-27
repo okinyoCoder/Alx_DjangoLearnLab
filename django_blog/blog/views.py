@@ -76,16 +76,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 # Comment Functionality to Blog Posts
 
    # view to display all comments under a blog post
-def allComment(request, post_id):
-    postObj = get_object_or_404(Post, id=post_id)
-    comments = Comment.objects.filter(post=postObj)
-    return render( request, 'blog/allComment.html', {'comment': comments})
-
-class commentDetailView(DetailView):
+class CommentDetailView(DetailView):
     model = Comment
     template_name = 'blog/detail_comment.html'
 
-class commentCreateView(LoginRequiredMixin, CreateView):
+class CommentCreateView(CreateView):
     model = Comment
     template_name = 'blog/comment_form.html'
     form_class = CommentForm
@@ -112,4 +107,8 @@ class CommentUpdateView(UpdateView):
 class CommentDeleteView(DeleteView):
     model = Comment
     template_name = 'blog/delete_comment.html'
-    success_url=reverse_lazy('post-list')    
+    success_url=reverse_lazy('comment-list')    
+
+class CommentCreateList(ListView):
+    model = Comment
+    template_name = 'blog/list_comment.html'
