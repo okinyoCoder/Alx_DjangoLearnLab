@@ -9,4 +9,13 @@ class CreatePostForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class meta:
         model = Comment
-        fields = "__all__"
+        fields = ['content',]
+
+    def validate_context(self):
+        """custom validation to the BookSerializer to 
+           ensure the publication_year is not in the future
+        """
+        content = self.cleaned_data.get("content")
+        if not content or len(content) < 5:
+            raise forms.ValidationError("Comment must be at least 5 characters long")
+        return content
