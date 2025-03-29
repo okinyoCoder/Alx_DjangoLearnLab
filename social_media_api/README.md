@@ -19,3 +19,8 @@ Enable users to like posts and receive notifications for various interactions wi
 Deploy the Django REST API to Production:
 
 Prepare and deploy the Django REST API to a production environment, ensuring it is secure and scalable.
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

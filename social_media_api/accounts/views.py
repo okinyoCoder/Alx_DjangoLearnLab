@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from .serializers import CustomUserSerializer
 from rest_framework import status
 from .models import CustomUser
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
 
 @api_view(["POST"])
 def register(request):
@@ -13,6 +14,9 @@ def register(request):
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            data['response'] = 'successful register a user'
+            token = Token.objects.get(user=serializer).key
+            data['token'] = token
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -30,8 +34,9 @@ def loginView(request):
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
-            user = authenticate(email=email, password=password)
+            user = authenticate(request, email=email, password=password)
             
             if user is not None:
+                login(request, user)
                 return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
