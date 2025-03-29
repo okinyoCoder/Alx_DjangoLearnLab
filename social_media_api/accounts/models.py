@@ -32,7 +32,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     bio = models.TextField(max_length=256)
     profile_picture = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
-    followers = models.ManyToManyField(symmetrical=False)
+    followers = models.ManyToManyField('self', symmetrical=False, related_name='follow-user')
     email = models.EmailField(verbose_name="email address", unique=True, max_length=255)
     username = models.TextField(max_length=256)
 
