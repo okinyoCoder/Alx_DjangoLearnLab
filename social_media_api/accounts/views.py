@@ -35,6 +35,3 @@ def loginView(request):
             if user is not None:
                 return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-
